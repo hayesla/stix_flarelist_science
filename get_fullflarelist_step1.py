@@ -37,9 +37,10 @@ def get_flarelist_from_datacenter(tstart, tend, save_csv=False):
 	# check if the time between start and end times is > 60 days
 	if (tend - tstart).datetime.days > 60:
 		times = [tstart.datetime]
-		while tstart<tend:
-		    tstart += 60*u.day
-		    times.append(tstart.datetime)
+		tstart_new = tstart.copy()
+		while tstart_new<tend:
+		    tstart_new += 60*u.day
+		    times.append(tstart_new.datetime)
 	else:
 		times = [tstart, tend]
 
