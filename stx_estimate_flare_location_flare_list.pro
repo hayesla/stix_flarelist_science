@@ -48,6 +48,14 @@ pro stx_estimate_flare_location_flare_list, path_sci_file, time_range, aux_data,
   energy_range=energy_range, imsize=imsize, mapcenter=mapcenter, $
   subc_index=subc_index, vis_fwdfit_pso_map=vis_fwdfit_pso_map, bp_nat_map=bp_nat_map,max_bp_coord=max_bp_coord, fitsigmasout_pso = fitsigmasout_pso, silent=silent, this_win=this_win, _extra=extra
 
+
+  catch, error
+  if error ne 0 then begin
+      catch, /cancel
+      print, 'A normal error occured: ' + !error_state.msg
+      
+  endif
+  
   default, energy_range, [6.,10.]
   default, imsize, [512,512]
   default, mapcenter, [0., 0.]
@@ -64,7 +72,7 @@ pro stx_estimate_flare_location_flare_list, path_sci_file, time_range, aux_data,
   mapcenter_stix = stx_hpc2stx_coord(mapcenter, aux_data)
 
   vis = stx_construct_visibility(path_sci_file, time_range, energy_range, mapcenter_stix, $
-    path_bkg_file=path_bkg_file,subc_index=subc_index,  /silent, $
+    path_bkg_file=path_bkg_file, subc_index=subc_index,  /silent, $
     _extra=extra)
 
   ;;******* Use Giordano's (u,v) points: no need to perform projection correction (see Giordano et al., 2015)
