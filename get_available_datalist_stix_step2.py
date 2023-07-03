@@ -4,8 +4,9 @@ import time
 import pandas as pd 
 from sunpy.time import parse_time, TimeRange
 
-stix_flares = pd.read_csv("stix_flare_list_20211101_20230331.csv")
-big_flares = stix_flares[stix_flares["LC0_PEAK_COUNTS_4S"]>=1e4]
+stix_flares = pd.read_csv("stix_flare_list_20210101_20230331.csv")
+#big_flares = stix_flares[stix_flares["LC0_PEAK_COUNTS_4S"]>=1e4]
+big_flares = stix_flares
 big_flares["peak_UTC"] = pd.to_datetime(big_flares["peak_UTC"])
 big_flares.sort_values(by="peak_UTC", inplace=True)
 big_flares.reset_index(inplace=True, drop=True)
@@ -59,3 +60,6 @@ def get_available_data_from_fido(big_flares):
 	big_flares.to_csv("stix_big_flare_list_{:s}_{:s}_with_files.csv".format(pd.to_datetime(big_flares["start_UTC"].min()).strftime("%Y%m%d"), 
 		 																    pd.to_datetime(big_flares["start_UTC"].max()).strftime("%Y%m%d")), 
 					  index=False, index_label=False)
+
+
+get_available_data_from_fido(big_flares)
