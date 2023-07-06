@@ -1,7 +1,7 @@
 import pandas as pd 
 from stixdcpy.net import Request as jreq
 
-stix_flares = pd.read_csv("stix_flare_list_20211101_20230331.csv")
+stix_flares = pd.read_csv("stix_flare_list_20221109_20221112.csv")
 #big_flares = stix_flares[stix_flares["LC0_PEAK_COUNTS_4S"]>=1e4]
 big_flares = stix_flares
 big_flares["peak_UTC"] = pd.to_datetime(big_flares["peak_UTC"])
@@ -36,7 +36,10 @@ def get_datacenter_table(big_flares):
 
 	# save to a csv
 	stix_df["flare_id_orig"] = stix_df["flare_id_orig"].astype(int)
-	stix_df.to_csv("stix_queryscience_api_{:s}_{:s}_bigflares.csv".format(pd.to_datetime(big_flares["start_UTC"].min()).strftime("%Y%m%d"), 
+	# stix_df.to_csv("stix_queryscience_api_{:s}_{:s}_bigflares.csv".format(pd.to_datetime(big_flares["start_UTC"].min()).strftime("%Y%m%d"), 
+	# 	 																  pd.to_datetime(big_flares["start_UTC"].max()).strftime("%Y%m%d")), 
+	#    			   index=False, index_label=False)
+	stix_df.to_csv("stix_queryscience_api_{:s}_{:s}_allflares.csv".format(pd.to_datetime(big_flares["start_UTC"].min()).strftime("%Y%m%d"), 
 		 																  pd.to_datetime(big_flares["start_UTC"].max()).strftime("%Y%m%d")), 
 	   			   index=False, index_label=False)
 

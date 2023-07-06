@@ -46,7 +46,7 @@
 
 pro stx_estimate_flare_location_flare_list, path_sci_file, time_range, aux_data, flare_loc=flare_loc, path_bkg_file=path_bkg_file, $
   energy_range=energy_range, imsize=imsize, mapcenter=mapcenter, $
-  subc_index=subc_index, vis_fwdfit_pso_map=vis_fwdfit_pso_map, bp_nat_map=bp_nat_map,max_bp_coord=max_bp_coord, fitsigmasout_pso = fitsigmasout_pso, silent=silent, this_win=this_win, _extra=extra
+  subc_index=subc_index, vis_fwdfit_pso_map=vis_fwdfit_pso_map, bp_nat_map=bp_nat_map, max_bp_coord=max_bp_coord, stix_max_bp_coord = max_bp_coord_stix, fitsigmasout_pso = fitsigmasout_pso, silent=silent, this_win=this_win, _extra=extra
 
 
   catch, error
