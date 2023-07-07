@@ -66,5 +66,5 @@ def get_flarelist_from_datacenter(tstart, tend, save_csv=False):
 
 
 tstart = Time("2022-11-09")
-tend = Time("2022-11-12")
+tend = Time("2022-11-15")
 get_flarelist_from_datacenter(tstart, tend, save_csv=True)

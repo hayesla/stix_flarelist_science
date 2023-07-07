@@ -4,9 +4,8 @@ import time
 import pandas as pd 
 from sunpy.time import parse_time, TimeRange
 
-stix_flares = pd.read_csv("stix_flare_list_20221109_20221112.csv")
-#big_flares = stix_flares[stix_flares["LC0_PEAK_COUNTS_4S"]>=1e4]
-big_flares = stix_flares # looking for all flares 
+stix_flares = pd.read_csv("stix_flare_list_20221109_20221115.csv")
+big_flares = stix_flares[stix_flares["LC0_PEAK_COUNTS_4S"]>=5*1e2]
 big_flares["peak_UTC"] = pd.to_datetime(big_flares["peak_UTC"])
 big_flares.sort_values(by="peak_UTC", inplace=True)
 big_flares.reset_index(inplace=True, drop=True)
