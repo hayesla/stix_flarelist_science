@@ -1,6 +1,6 @@
 pro loop_files_2
 
-data = READ_CSV('full_flarelist_with_paths.csv')
+data = READ_CSV('full_flarelist_all_with_paths.csv')
 
 
 for i = 0,n_elements(data.field01) do begin   ;loop through all rows in data structure
