@@ -68,8 +68,8 @@ pro get_flare_location, path_sci_file, time_range, path_aux_file, req_id, flare_
   endif else begin
     openw, 1, './flare_location_output4.csv', /append
   
-    Printf, 1, STRTRIM(STRING(flare_id),1), STRTRIM(STRING(req_id),1), flare_loc[0], flare_loc[1], fitsigmasout_pso.srcx, fitsigmasout_pso.srcy, max_bp_coord[0], max_bp_coord[1], $
-      format='(%"%s, %s, %f, %f, %f, %f, %f, %f")' 
+    Printf, 1, STRTRIM(STRING(req_id),1), flare_loc[0], flare_loc[1], fitsigmasout_pso.srcx, fitsigmasout_pso.srcy, max_bp_coord[0], max_bp_coord[1], $
+      format='(%"%s, %f, %f, %f, %f, %f, %f")' 
   
     Free_lun, 1
   endelse

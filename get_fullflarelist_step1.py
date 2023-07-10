@@ -55,6 +55,7 @@ def get_flarelist_from_datacenter(tstart, tend, save_csv=False):
 	full_flare_list = pd.concat(flare_df_lists)
 
 	full_flare_list.drop_duplicates(inplace=True)
+	full_flare_list.sort_values(by='peak_UTC', inplace=True)
 	full_flare_list.reset_index(inplace=True, drop=True)
 
 	if save_csv:

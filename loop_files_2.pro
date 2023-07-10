@@ -1,4 +1,4 @@
-pro loop_files2
+pro loop_files_2
 
 data = READ_CSV('full_flarelist_with_paths.csv')
 
