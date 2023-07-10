@@ -4,8 +4,8 @@ import time
 import pandas as pd 
 from sunpy.time import parse_time, TimeRange
 
-stix_flares = pd.read_csv("stix_flare_list_20211101_20230331.csv")
-big_flares = stix_flares[stix_flares["LC0_PEAK_COUNTS_4S"]>=1e4]
+stix_flares = pd.read_csv("stix_flare_list_20210101_20230701.csv")
+big_flares = stix_flares[stix_flares["LC0_PEAK_COUNTS_4S"]>=5*1e2]
 big_flares["peak_UTC"] = pd.to_datetime(big_flares["peak_UTC"])
 big_flares.sort_values(by="peak_UTC", inplace=True)
 big_flares.reset_index(inplace=True, drop=True)
@@ -34,8 +34,8 @@ def get_available_data_from_fido(big_flares):
 	    res_sci = Fido.search(a.Time(big_flares["start_UTC"].iloc[i], big_flares["end_UTC"].iloc[i]), a.Instrument.stix, 
 	                      a.stix.DataProduct.sci_xray_cpd)
 	    fido_res.append(res_sci)
-	t2 = time.time()
 
+	t2 = time.time()
 
 	# for each flare - see if files were available, and if so
 	# add the unique request IDs as a list. 
@@ -48,14 +48,16 @@ def get_available_data_from_fido(big_flares):
 	    for j in range(len(fido_res[i]["stix"])):
 	        file_tr = TimeRange(fido_res[i]["stix"][j][["Start Time", "End Time"]])
 	        if parse_time(big_flares["peak_UTC"].iloc[i]) in file_tr:
-	            files_ids.append(fido_res[i]["stix"][j]["Request ID"])
+	           	files_ids.append(fido_res[i]["stix"][j]["Request ID"])
 	    available_files.append(files_ids)
 	    number_unique_files.append(len(files_ids))
-
-	# add these to the flarelist
+	#add these to the flarelist
 	big_flares["number_available_files"] = number_unique_files
 	big_flares["available_file_request_IDs"] = available_files
-	# save new csv with these columns appended
-	big_flares.to_csv("stix_big_flare_list_{:s}_{:s}_with_files.csv".format(pd.to_datetime(big_flares["start_UTC"].min()).strftime("%Y%m%d"), 
+	#save new csv with these columns appended
+	big_flares.to_csv("stix_all_flare_list_{:s}_{:s}_with_files.csv".format(pd.to_datetime(big_flares["start_UTC"].min()).strftime("%Y%m%d"), 
 		 																    pd.to_datetime(big_flares["start_UTC"].max()).strftime("%Y%m%d")), 
 					  index=False, index_label=False)
+
+
+get_available_data_from_fido(big_flares)
