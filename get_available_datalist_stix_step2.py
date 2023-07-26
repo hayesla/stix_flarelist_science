@@ -1,4 +1,4 @@
-from sunpy.net import Fido, attrs as a 
+		from sunpy.net import Fido, attrs as a 
 from stixpy.net.client import STIXClient
 import time
 import pandas as pd 
@@ -11,7 +11,7 @@ big_flares.sort_values(by="peak_UTC", inplace=True)
 big_flares.reset_index(inplace=True, drop=True)
 
 
-def get_available_data_from_fido(big_flares):
+def get_available_data_from_fido(big_flares, save_csv=False):
 	"""
 	Query Fido to get all available request IDs for each flare.
 
@@ -55,9 +55,13 @@ def get_available_data_from_fido(big_flares):
 	big_flares["number_available_files"] = number_unique_files
 	big_flares["available_file_request_IDs"] = available_files
 	#save new csv with these columns appended
-	big_flares.to_csv("stix_all_flare_list_{:s}_{:s}_with_files.csv".format(pd.to_datetime(big_flares["start_UTC"].min()).strftime("%Y%m%d"), 
-		 																    pd.to_datetime(big_flares["start_UTC"].max()).strftime("%Y%m%d")), 
-					  index=False, index_label=False)
+	if save_csv:
+		big_flares.to_csv("stix_flare_list_{:s}_{:s}_with_files.csv".format(pd.to_datetime(big_flares["start_UTC"].min()).strftime("%Y%m%d"), 
+			 																    pd.to_datetime(big_flares["start_UTC"].max()).strftime("%Y%m%d")), 
+						  index=False, index_label=False)
+
+	return big_flares
 
 
-get_available_data_from_fido(big_flares)
+
+#get_available_data_from_fido(big_flares)
