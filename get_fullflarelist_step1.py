@@ -58,13 +58,13 @@ def get_flarelist_from_datacenter(tstart, tend, save_csv=False):
 	full_flare_list.reset_index(inplace=True, drop=True)
 
 	if save_csv:
-		full_flare_list.to_csv("stix_flare_list_{:s}_{:s}.csv".format(tstart.strftime("%Y%m%d"), 
+		full_flare_list.to_csv("stix_operational_flare_list_{:s}_{:s}.csv".format(tstart.strftime("%Y%m%d"), 
 			tend.strftime("%Y%m%d")), index_label=False)
 	
 	return full_flare_list
 
 
 
-tstart = Time("2021-01-01")
-tend = Time("2023-07-01")
-get_flarelist_from_datacenter(tstart, tend, save_csv=True)
+# tstart = Time("2021-01-01")
+# tend = Time("2023-07-01")
+# get_flarelist_from_datacenter(tstart, tend, save_csv=True)
