@@ -105,7 +105,7 @@ pro stx_estimate_flare_location_flare_list, path_sci_file, time_range, aux_data,
   ;vis_fwdfit_pso_map = stx_vis_fwdfit_pso(configuration,vis,aux_data,srcstr=srcstr,fitsigmas=fitsigmasout_pso, /silent)
 
    vis_fwdfit_pso_map = stx_vis_fwdfit_pso(configuration,vis,aux_data,imsize=imsize,pixel=pixel, $
-    srcstr = srcstr,fitsigmas=fitsigmasout_pso,/uncertainty)
+    srcstr = srcstr,fitsigmas=fitsigmasout_pso,/uncertainty, /silent)
 
 ;  vis_fwdfit_pso_map = stx_vis_fwdfit_pso(configuration,vis,aux_data,imsize=imsize,pixel=pixel, $
 ;    fitsigmas=fitsigmasout_pso,/uncertainty)

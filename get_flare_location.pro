@@ -33,21 +33,16 @@
 
 ;
 ; HISTORY: May 2023, Collier H. FHNW
+; July 2023, Hayes, L.A. Updated to remove saving, and return the variables.
 ; 
 ; CONTACT:
 ;   hannah.collier@fhnw.ch
 ;-
 ;.r stx_map2fits_test
-pro get_flare_location, path_sci_file, time_range, path_aux_file, req_id, flare_id, i, flare_loc=flare_loc, vis_fwdfit_pso_map, bp_nat_map=bp_nat_map, $
-  max_bp_coord=max_bp_coord, fitsigmasout_pso=fitsigmasout_pso
+pro get_flare_location, path_sci_file, time_range, path_aux_file, req_id, flare_id, flare_loc=flare_loc, vis_fwdfit_pso_map, bp_nat_map=bp_nat_map, $
+  max_bp_coord=max_bp_coord, fitsigmasout_pso=fitsigmasout_pso, stix_max_bp_coord=max_bp_coord_stix, time_shift=time_shift
 
-  ; handle normal errors
-  catch, error
-  if error ne 0 then begin
-      catch, /cancel
-      print, 'A normal error occured: ' + !error_state.msg
-      
-  endif
+
 
   aux_data = stx_create_auxiliary_data(path_aux_file, time_range, /silent)
 
@@ -59,31 +54,30 @@ pro get_flare_location, path_sci_file, time_range, path_aux_file, req_id, flare_
   filename_fits = 'bp_nat_map-' + STRTRIM(STRING(req_id),1) + '.fits' 
 
   save_path = './bp_maps3/' + filename_fits ; can change the path depending on your setup
-  
+
   stx_map2fits, bp_nat_map, save_path, path_sci_file
   
   ;filename_csv = 'flare_location_output' + time_range[0].Substring(0,10) + 'T' + time_range[0].Substring(12,13) + time_range[0].Substring(15,16) + time_range[0].Substring(18,19) + '-' + time_range[1].Substring(12,13) + time_range[1].Substring(15,16)  + time_range[1].Substring(18,19) + '-flare_location' + '.csv'
 
-  if (i EQ 0) then begin
-    write_csv, './flare_location_output4_part1.csv', STRTRIM(STRING(flare_id),1), STRTRIM(STRING(req_id),1), flare_loc[0], flare_loc[1], fitsigmasout_pso.srcx, fitsigmasout_pso.srcy, max_bp_coord[0], max_bp_coord[1], header = ['flare ID', 'request ID', 'X flare loc', 'Y flare loc', 'FWDFIT X SIGMA', 'FWDFIT Y SIGMA', 'MAX X COORD BP', 'MAX Y COORD BP']
-    write_csv, './flare_location_output4_part2.csv', STRTRIM(STRING(flare_id),1), max_bp_coord_stix[0], max_bp_coord_stix[1], time_shift, header=['flare ID', 'STIX MAX X BP COORD', 'STIX MAX Y BP COORD', 'time shift']
-    
-
-  endif else begin
-    openw, 1, './flare_location_output4_part1.csv', /append
-  
-    Printf, 1, STRTRIM(STRING(flare_id),1), STRTRIM(STRING(req_id),1), flare_loc[0], flare_loc[1], fitsigmasout_pso.srcx, fitsigmasout_pso.srcy, max_bp_coord[0], max_bp_coord[1], $
-      format='(%"%s, %s, %f, %f, %f, %f, %f, %f")' 
-  
-    Free_lun, 1
-    
-    openw, 1, './flare_location_output4_part2.csv', /append
-
-    Printf, 1, STRTRIM(STRING(flare_id),1), max_bp_coord_stix[0], max_bp_coord_stix[1], time_shift, $
-      format='(%"%s, %f, %f, %f")'
-
-    Free_lun, 1
-  endelse
+  ; handle normal errors
+  catch, error
+  if error ne 0 then begin
+      catch, /cancel
+      print, 'A normal error occured: ' + !error_state.msg
+      
+  endif
   
 end
 
+
+FUNCTION TESTY, path_sci_file, time_range, path_aux_file, time_shift=time_shift
+   aux_data = stx_create_auxiliary_data(path_aux_file, time_range, /silent)
+   stx_get_header_corrections, path_sci_file, time_shift = time_shift 
+    CATCH, Error_status    
+    IF Error_status NE 0 THEN BEGIN
+        PRINT, 'Error index: ', Error_status
+        PRINT, 'Error message: ', !ERROR_STATE.MSG
+        CATCH
+     ENDIF
+  return, aux_data
+end
