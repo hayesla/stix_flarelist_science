@@ -1,11 +1,11 @@
 pro get_flarelist_locations_step2
 
-flare_list = READ_CSV('stix_flarelist_with_files_lh_test.csv')
-
+;flare_list = READ_CSV('stix_flarelist_with_files_lh_test.csv')
+flare_list = READ_CSV('new_flarelist_with_files_1000.csv')
 
 ; define the file to save to
-openw, 1, './flarelist_locations_idloutput_620keV.csv'
-printf, 1, 'flare_id', 'timeshift', 'request_id', 'X_arcsec', 'Y_arcsec', 'X_fwdfitsigama', 'X_fwdfitsigama', $
+openw, 1, './flarelist_locations_idloutput_610keV_1000counts_40s.csv'
+printf, 1, 'flare_id', 'timeshift', 'request_id', 'X_arcsec', 'Y_arcsec', 'X_fwdfitsigama', 'Y_fwdfitsigama', $
            'max_bp_coord_x', 'max_bp_coord_y', 'max_bp_coord_stix_x', 'max_bp_coord_stix_y', $
 format='(%"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s")' 
 free_lun, 1
@@ -34,7 +34,7 @@ FOR i = 0,  n_elements(flare_list.FIELD01) DO BEGIN; n_elements(flare_list.FIELD
     IF Error_status NE 0 THEN BEGIN
       PRINT, 'Error index: ', Error_status
       PRINT, 'Error message: ', !ERROR_STATE.MSG
-      openw, 1, './errors_idlout_620keV.csv', /append
+      openw, 1, './errors_idlout_610keV_1000counts_40s.csv', /append
       printf, 1, i, !ERROR_STATE.MSG, $
         format='(%"%s,%s")'
       free_lun, 1
@@ -47,7 +47,7 @@ FOR i = 0,  n_elements(flare_list.FIELD01) DO BEGIN; n_elements(flare_list.FIELD
 
 
     ; save the output
-    openw, 1, './flarelist_locations_idloutput_620keV.csv', /append
+    openw, 1, './flarelist_locations_idloutput_610keV_1000counts_40s.csv', /append
     Printf, 1, STRTRIM(STRING(flare_id),1), time_shift, request_id, flare_loc[0], flare_loc[1], $
                fitsigmasout_pso.srcx, fitsigmasout_pso.srcy, $
                max_bp_coord[0], max_bp_coord[1], $

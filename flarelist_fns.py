@@ -5,6 +5,7 @@ from stixdcpy.net import Request as jreq
 from stixpy.net.client import STIXClient
 import pandas as pd
 from astropy import units as u
+from sunpy.net import Fido, attrs as a 
 
 
 
