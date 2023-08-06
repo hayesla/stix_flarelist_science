@@ -51,9 +51,9 @@ pro get_flare_location, path_sci_file, time_range, path_aux_file, req_id, flare_
 
   stx_get_header_corrections, path_sci_file, time_shift = time_shift 
   
-  filename_fits = 'bp_nat_map-' + STRTRIM(STRING(req_id),1) + '.fits' 
+  filename_fits = 'bp_nat_map-' + STRTRIM(STRING(req_id),1) +'_'+STRTRIM(STRING(flare_id),1) + '.fits' 
 
-  save_path = './bp_maps3/' + filename_fits ; can change the path depending on your setup
+  save_path = './bp_maps_416/' + filename_fits ; can change the path depending on your setup
 
   stx_map2fits, bp_nat_map, save_path, path_sci_file
   

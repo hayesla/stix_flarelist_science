@@ -56,7 +56,7 @@ pro stx_estimate_flare_location_flare_list, path_sci_file, time_range, aux_data,
       
   endif
   
-  default, energy_range, [6.,10.]
+  default, energy_range, [4.,16.]
   default, imsize, [512,512]
   default, mapcenter, [0., 0.]
   default, subc_index, stx_label2ind(['10a','10b','10c','9a','9b','9c','8a','8b','8c','7a','7b','7c'])
