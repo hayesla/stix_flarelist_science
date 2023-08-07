@@ -1,12 +1,26 @@
 # Solar Orbiter/STIX science flare list 
 
 This is a repository for a study of the STIX flare list using the scientific pixel data.
+This flarelist builds upon the operational STIX flare list that is avalable through [stixdcpy API](https://github.com/i4Ds/stixdcpy).
+From the events in this list with available pixel data, and with counts above 1000 in the 4-10 keV energy band an image was generated and the location of the flare estimated. 
+
+Here we provide the flare list with the coordinates of the flare estimated, and in several coordinate frames and information whether that flare was observed from Earth.
 
 ## STIX flare list:
 
 This repo provides a STIX flare list with the estimated flare location in the csv file: `STIX_flarelist_w_locations_20210214_20230430_version1.csv`
 
-In this file contains:
+This can be read in python using `pd.read_csv`
+e.g. 
+
+```
+>>> import pandas as pd
+>>> stix_flarelist = pd.read_csv("STIX_flarelist_w_locations_20210214_20230430_version1.csv")`
+```
+or similary in IDL using `READ_CSV()`.
+
+
+In this file, the flarelist contains:
 * `start_UTC` : start time of flare
 * `end_UTC` : end time of flare
 * `peak_UTC` : peak time of flare
