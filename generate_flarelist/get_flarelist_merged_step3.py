@@ -90,7 +90,7 @@ flarelist.loc[:, 'hgc_lon'] = flare_coords_hgc.lon.value
 flarelist.loc[:, 'hgc_lat'] = flare_coords_hgc.lat.value
 
 
-columns = ['start_UTC', 'end_UTC', 'peak_UTC', '4-10 keV', '10-15 keV', '10-15 keV', '15-25 keV', '25-50 keV', '50-84 keV',
+columns = ['start_UTC', 'end_UTC', 'peak_UTC', '4-10 keV', '10-15 keV', '15-25 keV', '25-50 keV', '50-84 keV',
            'att_in',
            'bkg 4-10 keV', 'bkg 10-15 keV', 'bkg 15-25 keV', 'bkg 25-50 keV', 'bkg 50-84 keV', 'bkg_baseline_4-10 keV',
            'hpc_x_solo', 'hpc_y_solo', 'hpc_x_earth', 'hpc_y_earth', 'visible_from_earth', 
