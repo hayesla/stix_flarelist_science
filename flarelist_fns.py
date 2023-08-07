@@ -6,7 +6,8 @@ from stixpy.net.client import STIXClient
 import pandas as pd
 from astropy import units as u
 from sunpy.net import Fido, attrs as a 
-
+import sunpy.map
+import numpy as np 
 
 
 def get_flarelist_from_datacenter(tstart, tend, save_csv=False):
@@ -176,4 +177,58 @@ def get_aux_data(tstart, tend):
     else:
         return ''
 
+
+def check_bp_maps(full_flarelist, i, rootdir='./bp_maps_416', plot=False):
+    """
+    Function to check the back-projection maps generated through the location estimatation. 
+    Here, this is done by checking the fits file of the map, and then removing the pixels surrounding 
+    the brightest pixel and then checkign if the next brightest pixel is 90% of the max. 
+    If it is, then we say that its not a good "map", and that the value of the flare location 
+    isn't trustworthy. 
+
+    Here, you pass the index of the `full_flarelist` dataframe.
+
+    Parameters:
+    ----------
+    full_flarelist : `pd.DataFrame`
+        pandas DataFrame of flarelist with columns, `req_id` and `flare_id`
+    i : int, 
+        index of the `full_flarelist` dataframe
+    root_dir : `str`, directory of where map fits are saved
+        default to `./bp_maps416`
+    plot : Boolean, optional
+        If True, then plots the map with the brightest pixel as a cross and shows the
+        marked out pixels
+
+    Returns:
+    --------
+    `str` : `pass` or `fail` 
+
+    """
+    file = rootdir+'/bp_nat_map-{:d}_{:d}.fits'.format(full_flarelist["req_id"].iloc[i],
+                                                       full_flarelist["flare_id"].iloc[i])
+    map_test = sunpy.map.Map(file)
+    map_max_val = np.max(map_test.data)
+    x, y = np.where(map_test.data == map_max_val)
+    new_data = map_test.data.copy()
+    new_data[x[0]-20:x[0]+20, y[0]-20:y[0]+20]=0
+    
+    new_max_val = np.max(new_data)
+    if new_max_val < 0.9*map_max_val:
+        confidence = "pass"
+
+    else:
+        confidence = "fail"
+    
+    if plot:
+        new_map = sunpy.map.Map(new_data, map_test.meta)
+        fig = plt.figure(figsize=(9, 4))
+        ax1 = fig.add_subplot(1, 2, 1, projection=map_test)
+        ax2 = fig.add_subplot(1, 2, 2, projection=new_map)
+        map_test.plot(axes=ax1, vmin=0, vmax=map_max_val, cmap="viridis")
+        map_test.draw_limb(axes=ax1)
+        new_map.plot(axes=ax2, vmin=0, vmax=map_max_val, cmap="viridis")
+        new_map.draw_limb(axes=ax2)
+    
+    return confidence
 
