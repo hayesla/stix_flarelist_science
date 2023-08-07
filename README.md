@@ -57,6 +57,9 @@ In this file, the flarelist contains:
 
 How it was generated:
 --------------------
+The code used to generate this flarelist `STIX_flarelist_w_locations_20210214_20230430_version1.csv` is available in the `generate_flarelist` directory. 
+Its currently in three steps (python, idl, python).
+
 The flarelist was compiled from the operational STIX flarelist which is available on the [STIX datacenter](https://datacenter.stix.i4ds.net/) and accessabile through the [stixdcpy API](https://github.com/i4Ds/stixdcpy).
 From this:
 
