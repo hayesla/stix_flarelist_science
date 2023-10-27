@@ -11,6 +11,10 @@ __pycache__/
 *.png
 *.html
 *.key
+*.txt
+*.pha
+*.fit
+*.pptx
 
 # Distribution / packaging
 .Python
