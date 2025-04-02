@@ -5,6 +5,7 @@ from sunpy.time import parse_time, TimeRange
 from stixpy.net.client import STIXClient
 from datetime import datetime
 import re
+from astropy import units as u 
 
 def parse_file_date_range(filename: str):
     """
