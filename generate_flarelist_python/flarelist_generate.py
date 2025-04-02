@@ -332,7 +332,7 @@ def get_flares(tstart, tend, local_files_path):
 
     Example Usage:
     -------------
-    >>> from run_pipeline import get_flares
+    >>> from flarelist_generate import get_flares
     >>> flares = get_flares('2023-01-01', '2023-02-01', '/path/to/local/files')
     >>> print(flares)
     """
