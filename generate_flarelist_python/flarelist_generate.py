@@ -124,7 +124,7 @@ def filter_and_associate_files(flare_list, local_files_path, threshold_counts=10
             else:
                 file = "file_issue"
         file_names.append(file)
-        logging.info(f"Processed flare {i + 1}/{len(flarelist_gt_1000)}")
+        logging.info(f"Processed flare to find files {i + 1}/{len(flarelist_gt_1000)}")
 
     flarelist_gt_1000["filenames"] = file_names
     times_flares = pd.to_datetime(flarelist_gt_1000["peak_UTC"])
@@ -286,18 +286,28 @@ def merge_and_process_data(flare_list_with_locations, save_csv=False):
                                               'GOES_flux' : 'GOES_flux_time_of_flare',
                                               'loc_x' : 'hpc_x_solo',
                                               'loc_y' : 'hpc_y_solo',
+                                              'error' : 'error_with_imaging'
                                               }, inplace=True)
 
     # overwrite the attenuator keyword to correct one from files.
     flare_list_with_locations["att_in"] = flare_list_with_locations["attenuator"]
 
+    #
+    flare_list_with_locations["goes_estimated_max_flux"] = 10**flare_list_with_locations["goes_estimated_max_flux"]
+    flare_list_with_locations["goes_estimated_min_flux"] = 10**flare_list_with_locations["goes_estimated_min_flux"]
+    flare_list_with_locations["goes_estimated_mean_flux"] = 10**flare_list_with_locations["goes_estimated_mean_flux"]
 
     columns = ['start_UTC', 'end_UTC', 'peak_UTC', '4-10 keV', '10-15 keV', '15-25 keV', '25-50 keV', '50-84 keV',
                'bkg 4-10 keV', 'bkg 10-15 keV', 'bkg 15-25 keV', 'bkg 25-50 keV', 'bkg 50-84 keV', 'bkg_baseline_4-10 keV',
                'hpc_x_solo', 'hpc_y_solo', 'hpc_x_earth', 'hpc_y_earth', 'visible_from_earth', 
                'hgs_lon', 'hgs_lat', 'hgc_lon', 'hgc_lat', 
                'solo_position_lat', 'solo_position_lon', 'solo_position_AU_distance', 
-               'GOES_class_time_of_flare', 'GOES_flux_time_of_flare', 'att_in', 'flare_id', 'sidelobes_ratio', 'error']
+               'GOES_class_time_of_flare', 'GOES_flux_time_of_flare', 'att_in', 'flare_id', 'sidelobes_ratio', 
+               'goes_estimated_min_class', 'goes_estimated_max_class',
+               'goes_estimated_mean_class', 'goes_estimated_min_flux',
+               'goes_estimated_max_flux', 'goes_estimated_mean_flux', 'error_with_imaging']
+
+
     flarelist_final = flare_list_with_locations[columns]
     # Save final processed list
     times_flares = pd.to_datetime(flarelist_final["peak_UTC"])
@@ -307,7 +317,7 @@ def merge_and_process_data(flare_list_with_locations, save_csv=False):
         flarelist_final.to_csv(filename, index=False, index_label=False)
         logging.info(f'Saved flare list to {filename}')
 
-    return flare_list_with_locations
+    return flarelist_final
 
 
 
@@ -335,7 +345,12 @@ def get_flares(tstart, tend, local_files_path):
     >>> from flarelist_generate import get_flares
     >>> flares = get_flares('2023-01-01', '2023-02-01', '/path/to/local/files')
     >>> print(flares)
+
+
     """
+    # there's currently a deprecation warning in stixpy for querying data (see #142 In TCDSolar/stixpy;)
+    warnings.filterwarnings("ignore", category=SunpyDeprecationWarning)
+
     if isinstance(tstart, str):
         tstart = Time(tstart)
     if isinstance(tend, str):
