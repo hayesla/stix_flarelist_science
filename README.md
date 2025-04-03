@@ -5,6 +5,8 @@ This flarelist builds upon the operational STIX flare list that is avalable thro
 From the events in this list with available pixel data, and with counts above 1000 in the 4-10 keV energy band an image was generated and the location of the flare estimated. 
 Currently it consists of ~25150 flares over the time period of 2021-01-01 to 2025-02-28.
 
+ ** i need to update this ** 
+ 
 Here we provide the flare list with the coordinates of the flare estimated, and in several coordinate frames and information whether that flare was observed from Earth.
 The flarelist if provided in this file: `STIX_flarelist_w_locations_20210318_20250228_version1_python.csv`
 
